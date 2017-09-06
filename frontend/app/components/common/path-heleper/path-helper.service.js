@@ -187,7 +187,12 @@ function PathHelper() {
       return PathHelper.apiV3WorkPackagesPath() + '/available_projects';
     },
     apiv3MentionablePrincipalsPath: function(projectId, term) {
-      return PathHelper.apiV3 + '/principals?filters=[{"status":{"operator":"!","values":["0","3"]}},{"member":{"operator":"=","values":["' + projectId + '"]}},{"type":{"operator":"=","values":["User"]}},{"name":{"operator":"~","values":["' + term + '"]}}]&sortBy=[["name","asc"]]';
+      var path = PathHelper.apiV3;
+      path = path + '/principals?filters=[{"status":{"operator":"!","values":["0","3"]}},{"member":{"operator":"=","values":["' + projectId + '"]}},{"type":{"operator":"=","values":["User"]}}';
+      if (term && term.length > 0) {
+        path = path + ',{"name":{"operator":"~","values":["' + term + '"]}}';
+      }
+      return path + ']&sortBy=[["name","asc"]]&offset=1&pageSize=10';
     },
     apiv3ProjectWorkPackagesPath: function(projectIdentifier) {
       return PathHelper.apiV3ProjectPath(projectIdentifier) + '/work_packages';
